@@ -13,10 +13,10 @@ const http = require('http');
 const express = require('express');
 const app = express();
 
-const cors = require("cors");
+const cors = require('cors');
 app.use(
   cors({
-    origin: '*'
+    origin: '*',
   })
 );
 
@@ -39,7 +39,7 @@ app.get('/:origin', (req, res, next) => {
 
 //app.get('*', test);
 app.post('*', (req, res, next) => {
-  console.log('Get Post: ',req.body);
+  console.log('Get Post: ', req.body);
   test(req, res, next);
 });
 

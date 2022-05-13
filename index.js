@@ -14,23 +14,33 @@ async function middelware(req, res, next) {
       })
     );
   */
-  
-  if (typeof req.body.url != "undefined") {
-    var conn=null;
-    if (req.body.url.replace('https://','')!=req.body.url) {
-      conn=https;
+
+  if (typeof req.body.url != 'undefined') {
+    var conn = null;
+    if (req.body.url.replace('https://', '') != req.body.url) {
+      conn = https;
     } else {
-      conn=http;
+      conn = http;
     }
-    await conn.get(req.body.url, {headers: { 'User-Agent': package_info.name+'; '+req.get('User-Agent') }}, function async (response) {
-      response.on('data', async (data) => {
-        res.send(data);
+    await conn
+      .get(
+        req.body.url,
+        {
+          headers: {
+            'User-Agent': package_info.name + '; ' + req.get('User-Agent'),
+          },
+        },
+        function async(response) {
+          response.on('data', async (data) => {
+            res.send(data);
+          });
+        }
+      )
+      .on('error', function (e) {
+        res.send(e);
       });
-    }).on('error', function (e) {
-      res.send(e);  
-    });
   } else {
-    res.send({'message':'missing url'});
+    res.send({ message: 'missing url' });
   }
   //next();
 }
