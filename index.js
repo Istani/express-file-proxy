@@ -22,13 +22,15 @@ async function middelware(req, res, next) {
     } else {
       conn = http;
     }
+    //console.log('Proxy URL: '+req.body.url);
+    var newHeaders=JSON.parse(JSON.stringify(req.headers));
+    newHeaders['user-agent']=package_info.name + '; '+newHeaders['user-agent'];
+    
     await conn
       .get(
         req.body.url,
         {
-          headers: {
-            'User-Agent': package_info.name + '; ' + req.get('User-Agent'),
-          },
+          headers: newHeaders,
         },
         function async(response) {
           response.on('data', async (data) => {
