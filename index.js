@@ -23,9 +23,11 @@ async function middelware(req, res, next) {
       conn = http;
     }
     //console.log('Proxy URL: '+req.body.url);
-    var newHeaders=JSON.parse(JSON.stringify(req.headers));
-    newHeaders['user-agent']=package_info.name + '; '+newHeaders['user-agent'];
-    
+    var newHeaders = JSON.parse(JSON.stringify(req.headers));
+    newHeaders['user-agent'] =
+      package_info.name + '; ' + newHeaders['user-agent'];
+
+    var resp_data;
     await conn
       .get(
         req.body.url,
@@ -34,15 +36,19 @@ async function middelware(req, res, next) {
         },
         function async(response) {
           response.on('data', async (data) => {
-            res.send(data);
+            resp_data += data;
+            //res.status(200).send(data);
+          });
+          response.on('end', () => {
+            res.status(200).send(resp_data);
           });
         }
       )
       .on('error', function (e) {
-        res.send(e);
+        res.status(500).send(e);
       });
   } else {
-    res.send({ message: 'missing url' });
+    res.status(404).send({ message: 'missing url' });
   }
   //next();
 }
