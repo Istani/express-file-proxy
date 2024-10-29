@@ -24,8 +24,7 @@ async function middelware(req, res, next) {
     }
     //console.log('Proxy URL: '+req.body.url);
     var newHeaders = JSON.parse(JSON.stringify(req.headers));
-    newHeaders['user-agent'] =
-      package_info.name + '; ' + newHeaders['user-agent'];
+    newHeaders['user-agent'] = package_info.name + '; ' + newHeaders['user-agent'];
 
     var resp_data;
     await conn
