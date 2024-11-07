@@ -6,7 +6,7 @@ console.log(software);
 console.log('='.repeat(software.length));
 console.log();
 
-const debug = require('../debug');
+var debug = require("@istani/debug")(require('./package.json').name);
 process.chdir(__dirname);
 
 const http = require('http');
